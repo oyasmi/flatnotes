@@ -18,6 +18,9 @@ from whoosh.query import Every
 from whoosh.searching import Hit
 from whoosh.support.charset import accent_map
 
+from jieba.analyse import ChineseAnalyzer
+jiebaAnalyzer = ChineseAnalyzer()
+
 from helpers import get_env, is_valid_filename
 from logger import logger
 
@@ -34,9 +37,9 @@ class IndexSchema(SchemaClass):
     filename = ID(unique=True, stored=True)
     last_modified = DATETIME(stored=True, sortable=True)
     title = TEXT(
-        field_boost=2.0, analyzer=StemmingFoldingAnalyzer, sortable=True
+        field_boost=2.0, analyzer=jiebaAnalyzer, sortable=True
     )
-    content = TEXT(analyzer=StemmingFoldingAnalyzer)
+    content = TEXT(analyzer=jiebaAnalyzer)
     tags = KEYWORD(lowercase=True, field_boost=2.0)
 
 
